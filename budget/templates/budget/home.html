@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Finance Analyzer</title>
+    </head>
+    <body>
+        <h1>Finance Analyzer</h1>
+        <br>
+        <input id="id_new_date" name="date" type="text" placeholder="Enter a date (MM-DD-YYYY)" required />
+        <select id="id_select_type" name="type">
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+            <option value="transfer">Transfer</option>
+        </select>
+        <input id="id_new_description" name="description" type="text" placeholder="Description" required />
+        <input id="id_new_amount" name="amount" type="number" min="0" step="any" placeholder="Enter the amount" />
+        <br><br/>
+        <input id="id_submit" type="submit" value="Submit"/>
+        
+    </body>
+</html>
