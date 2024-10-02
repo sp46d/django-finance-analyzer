@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import Select
 from django.test import LiveServerTestCase
+from selenium.webdriver.common.by import By
 
 
 class NewVisitorTest(LiveServerTestCase):
@@ -16,14 +18,62 @@ class NewVisitorTest(LiveServerTestCase):
 
     def tearDown(self):
         self.browser.quit()
-        
+
     # Below are descriptions from the perspective of a user as to how the app should work
     def test_can_create_financial_transactions(self):
         # Ethan visits the webpage
         self.browser.get(self.live_server_url)
-        
+
         # He notices the page title and header mention finance analyzer
         self.assertIn("Finance Analyzer", self.browser.title)
+        header_text = self.browser.find_element(By.TAG_NAME, "h1").text
+        self.assertIn("Finance Analyzer", header_text)
+
+        # He tries to enter a recent transaction record he made.
+        # He finds multiple places he can type in and the first one is for date
+        date_input = self.browser.find_element(By.ID, "id_new_date")
+        self.assertEqual(date_input.get_attribute("placeholder"), "Enter a date (MM-DD-YYYY)")
+        self.assertTrue(date_input.get_attribute("required"))
+
+
+        # The second box is for type of the transaction, a dropdown menu that includes
+        # two options: 1. expense and 2. income
+        s = self.browser.find_element(By.ID, "id_select_type")
+        dropdown = Select(s)
+        drop_options_text = [option.text for option in dropdown.options]
+        self.assertEqual(len(drop_options_text), 3)
+        self.assertIn("Expense", drop_options_text)
+        self.assertIn("Income", drop_options_text)
+        self.assertIn("Transfer", drop_options_text)
+
+        # The third box is for description of the transaction
+        # He finds this box is not rquired to fill in.
+        desc_input = self.browser.find_element(By.ID, "id_new_description")
+        self.assertEqual(desc_input.get_attribute("placeholder"), "Description")
+
+        # The last one is for the amount of the transaction
+        amount_input = self.browser.find_element(By.ID, "id_new_amount")
+        self.assertEqual(amount_input.get_attribute("placeholder"), "Enter the amount")
+        self.assertEqual(amount_input.get_attribute("type"), "number")
+        
+        # So, he goes on and type in the first transaction he made yesterday.
+        # it was October, 1, 2024, and he bought his favorite cookies at $5.00
+        date_input.send_keys("10-01-2024")
+        dropdown.select_by_visible_text("Expense")
+        desc_input.send_keys("Buy cookies")
+        amount_input.send_keys("5.00")
+
+        # After typing in all the information about the transaction,
+        # he finds the submit button located right below
+        submit_button = self.browser.find_element(By.ID, "id_submit")
+        self.assertEqual(submit_button.get_attribute("value"), "Submit")
+
+        # after he reviews what he wrote, he clicks on the submit button
+        submit_button.click()
+
+        # 
+        
+        
         
         
 
@@ -50,7 +100,7 @@ class NewVisitorTest(LiveServerTestCase):
     #     inputbox.send_keys(Keys.ENTER)
     #     time.sleep(1)
     #     self.check_for_row_in_list_table("1: Buy peacock feathers")
-        
+
     #     # There is still a text box inviting her to add another item.
     #     # She enters "Use peacock feathers to make a fly"
     #     # (Edith is very methodical)
@@ -58,9 +108,9 @@ class NewVisitorTest(LiveServerTestCase):
     #     inputbox.send_keys("Use peacock feathers to make a fly")
     #     inputbox.send_keys(Keys.ENTER)
     #     time.sleep(1)
-        
+
     #     # The page updates again, and now shows both items on her list
     #     self.check_for_row_in_list_table("1: Buy peacock feathers")
     #     self.check_for_row_in_list_table("2: Use peacock feathers to make a fly")
-        
+
     #     # Satisfied, she goes back to sleep
