@@ -68,10 +68,16 @@ class NewVisitorTest(LiveServerTestCase):
         submit_button = self.browser.find_element(By.ID, "id_submit")
         self.assertEqual(submit_button.get_attribute("value"), "Submit")
 
-        # after he reviews what he wrote, he clicks on the submit button
+        # Once he reviews what he wrote, he clicks on the submit button
         submit_button.click()
 
-        # 
+        # Then, he sees the transaction record he just submitted show below.
+        table = self.browser.find_element(By.ID, "id_transaction_table")
+        rows = table.find_elements(By.TAG_NAME, "tr")
+        columns = self.browser.find_elements(By.XPATH, "//*[@id='id_transaction_table']/tbody/tr[2]/td")
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(len(columns), 4)
+        
         
         
         
