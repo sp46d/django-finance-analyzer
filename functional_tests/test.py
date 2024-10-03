@@ -32,9 +32,10 @@ class NewVisitorTest(LiveServerTestCase):
         # He tries to enter a recent transaction record he made.
         # He finds multiple places he can type in and the first one is for date
         date_input = self.browser.find_element(By.ID, "id_new_date")
-        self.assertEqual(date_input.get_attribute("placeholder"), "Enter a date (MM-DD-YYYY)")
+        self.assertEqual(
+            date_input.get_attribute("placeholder"), "Enter a date (YYYY-MM-DD)"
+        )
         self.assertTrue(date_input.get_attribute("required"))
-
 
         # The second box is for type of the transaction, a dropdown menu that includes
         # two options: 1. expense and 2. income
@@ -55,10 +56,10 @@ class NewVisitorTest(LiveServerTestCase):
         amount_input = self.browser.find_element(By.ID, "id_new_amount")
         self.assertEqual(amount_input.get_attribute("placeholder"), "Enter the amount")
         self.assertEqual(amount_input.get_attribute("type"), "number")
-        
+
         # So, he goes on and type in the first transaction he made yesterday.
         # it was October, 1, 2024, and he bought his favorite cookies at $5.00
-        date_input.send_keys("10-01-2024")
+        date_input.send_keys("2024-10-01")
         dropdown.select_by_visible_text("Expense")
         desc_input.send_keys("Buy cookies")
         amount_input.send_keys("5.00")
