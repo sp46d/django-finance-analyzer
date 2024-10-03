@@ -74,14 +74,11 @@ class NewVisitorTest(LiveServerTestCase):
         # Then, he sees the transaction record he just submitted show below.
         table = self.browser.find_element(By.ID, "id_transaction_table")
         rows = table.find_elements(By.TAG_NAME, "tr")
-        columns = self.browser.find_elements(By.XPATH, "//*[@id='id_transaction_table']/tbody/tr[2]/td")
-        self.assertEqual(len(rows), 1)
+        columns = self.browser.find_elements(
+            By.XPATH, "//*[@id='id_transaction_table']/tbody/tr[2]/td"
+        )
+        self.assertEqual(len(rows), 2)  # table header included
         self.assertEqual(len(columns), 4)
-        
-        
-        
-        
-        
 
     # def test_can_start_a_todo_list(self):
     #     # Edith has heard about a cool new online to-do app.
