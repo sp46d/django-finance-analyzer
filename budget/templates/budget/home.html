@@ -5,16 +5,39 @@
     <body>
         <h1>Finance Analyzer</h1>
         <br>
-        <input id="id_new_date" name="date" type="text" placeholder="Enter a date (MM-DD-YYYY)" required />
-        <select id="id_select_type" name="type">
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-            <option value="transfer">Transfer</option>
-        </select>
-        <input id="id_new_description" name="description" type="text" placeholder="Description" required />
-        <input id="id_new_amount" name="amount" type="number" min="0" step="any" placeholder="Enter the amount" />
-        <br><br/>
-        <input id="id_submit" type="submit" value="Submit"/>
+        <form method="POST">
+            <input id="id_new_date" name="date" type="text" placeholder="Enter a date (YYYY-MM-DD)" required />
+            <select id="id_select_type" name="transaction_type">
+                <option value="EX">Expense</option>
+                <option value="IN">Income</option>
+                <option value="TR">Transfer</option>
+            </select>
+            <input id="id_new_description" name="description" type="text" placeholder="Description" required />
+            <input id="id_new_amount" name="amount" type="number" min="0" step="any" placeholder="Enter the amount" />
+            <input id="id_submit" type="submit" value="Submit"/>
+            {% csrf_token %}
+        </form>
+        <br/>
+        <p>
+            <h2>Transaction history</h2>
+        </p>
+        <br/>
+        <table id="id_transaction_table">
+            <tr>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>DESCRIPTION</th>
+                <th>AMOUNT</th>
+            </tr>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td>${{ transaction.amount }}</td>
+                </tr>
+            {% endfor %}
+        </table>
         
     </body>
 </html>
