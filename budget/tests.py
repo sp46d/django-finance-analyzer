@@ -12,12 +12,11 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, "budget/home.html")
         
     def test_displays_all_transactions(self):
-        Transaction.objects.create(date="10-02-2024",
-                                   type="expense",
+        Transaction.objects.create(date="2024-10-02",
+                                   transaction_type="EX",
                                    description="cookies",
                                    amount="10.00")
-        Transaction.objects.create(date="10-02-2024",
-                                   type="expense",
+        Transaction.objects.create(transaction_type="EX",
                                    description="milk",
                                    amount="5.00")
         response = self.client.get("/")
