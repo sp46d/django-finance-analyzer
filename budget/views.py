@@ -12,5 +12,5 @@ def home(request):
         )
         return redirect("/")
 
-    transactions = Transaction.objects.order_by("-date").all()
+    transactions = Transaction.objects.order_by("-created_at").all()
     return render(request, "budget/home.html", {"transactions": transactions})
