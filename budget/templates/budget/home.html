@@ -5,23 +5,13 @@
     <body>
         <h1>Finance Analyzer</h1>
         <br>
-        <form method="POST">
-            <input id="id_new_date" name="date" type="text" placeholder="Enter a date (YYYY-MM-DD)" required />
-            <select id="id_select_type" name="transaction_type">
-                <option value="EX">Expense</option>
-                <option value="IN">Income</option>
-                <option value="TR">Transfer</option>
-            </select>
-            <input id="id_new_description" name="description" type="text" placeholder="Description" required />
-            <input id="id_new_amount" name="amount" type="number" min="0" step="any" placeholder="Enter the amount" />
-            <input id="id_submit" type="submit" value="Submit"/>
-            {% csrf_token %}
-        </form>
-        <br/>
+        <button id="id_button_type" type="button">Add transaction</button>
+        <button id="id_button_upload" type="button">Upload statement</button>
+        <br><br>
         <p>
             <h2>Transaction history</h2>
         </p>
-        <br/>
+
         <table id="id_transaction_table">
             <tr>
                 <th>DATE</th>
@@ -39,6 +29,5 @@
                 </tr>
             {% endfor %}
         </table>
-        
     </body>
 </html>
