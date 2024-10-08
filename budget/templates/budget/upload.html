@@ -1,12 +1,15 @@
 <html>
 
-
+<p>
+    The statement must be in either pdf or csv file format to be successfully uploaded.
+    <br>Please double-check the file format before upload.
+</p>
 
 <form enctype="multipart/form-data" method="POST">
     {% csrf_token %}
 
     {{ form.file }}
-    <br>
+    <br><br>
     <input type="submit" value="Upload">
 
 </form>
