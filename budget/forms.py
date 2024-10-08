@@ -17,3 +17,4 @@ class InsertTransactionForm(forms.Form):
     transaction_type = forms.ChoiceField(choices=TRANSACTION_TYPE_CHOICES)
     description = forms.CharField(max_length=200)
     amount = forms.DecimalField(min_value=0, max_digits=10, decimal_places=2)
+

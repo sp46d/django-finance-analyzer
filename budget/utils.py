@@ -1,10 +1,5 @@
 import csv
 from .models import Transaction
-# import os
-# from pathlib import Path
-
-# BASE_DIR = Path(".").resolve()
-# file = os.path.join(BASE_DIR, "artificial_data", "test.csv")
 
 
 def import_csv(file) -> None:

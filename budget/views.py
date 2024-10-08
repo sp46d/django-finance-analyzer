@@ -14,7 +14,7 @@ from .utils import import_csv
 
 
 def home_page(request):
-    transactions = Transaction.objects.all()
+    transactions = Transaction.objects.order_by("-date")
     return render(
         request, "budget/home.html", {"transactions": transactions}
     )
@@ -29,8 +29,22 @@ def new_transaction(request):
         form = InsertTransactionForm()
         
     return render(request, "budget/typing.html", {"form": form})
-# def upload_file(request):
 
-#     # file = request.FILES["file"]
-#     # import_csv(file)
-#     return HttpResponse(f"{str(file)} imported successfully.")
+
+def upload_file(request):
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES["file"]
+            import_csv(file)
+            return redirect("/")
+    else:
+        form = UploadFileForm()
+        
+    return render(request, "budget/upload.html", {"form": form})
+            
+        
+    # else:
+        # form = UploadFileForm()
+    return HttpResponse("No files have been uploaded.")
+

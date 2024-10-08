@@ -1,3 +1,5 @@
+from pathlib import Path
+import os
 from django.test import TestCase
 from budget.models import Transaction
 
@@ -40,13 +42,21 @@ class TypingTransactionTest(TestCase):
         
     def test_can_redirect_home_after_post(self):
         response = self.client.post("/new/", data={"date": "2024-10-02",
-                                                  "transaction_type": "expense",
-                                                  "description": "cookies",
-                                                  "amount": "10.00"})
+                                                   "transaction_type": "expense",
+                                                   "description": "cookies",
+                                                   "amount": "10.00"})
         self.assertRedirects(response, "/")
         
 
-# class UploadStatementTest(TestCase):
-#     def test_uses_upload_template(self):
-#         response = self.client.get("/upload/")
-#         self.assertTemplateUsed(response, "budget/upload.html")
+class UploadStatementTest(TestCase):
+    BASE_DIR = Path('.').resolve()
+    FILE_PATH = os.path.join(BASE_DIR, "artificial_data", "test.csv")
+        
+    def test_uses_upload_template(self):
+        response = self.client.get("/upload/")
+        self.assertTemplateUsed(response, "budget/upload.html")
+        
+    def test_redirects_after_file_upload(self):
+        with open(self.FILE_PATH) as fp:
+            response = self.client.post("/upload/", data={"file": fp})
+        self.assertRedirects(response, "/")
