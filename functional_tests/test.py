@@ -10,7 +10,6 @@ BRAVE_PATH = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
 
 
 class NewVisitorTest(LiveServerTestCase):
-
     def setUp(self):
         option = webdriver.ChromeOptions()
         option.binary_location = BRAVE_PATH
@@ -20,8 +19,7 @@ class NewVisitorTest(LiveServerTestCase):
 
     def tearDown(self):
         self.browser.quit()
-        
-        
+
     # Below are descriptions from the perspective of a user as to how the app should work
     def test_can_create_financial_transactions(self):
         # Ethan visits the webpage
@@ -31,11 +29,13 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn("Finance Analyzer", self.browser.title)
         header_text = self.browser.find_element(By.TAG_NAME, "h1").text
         self.assertIn("Finance Analyzer", header_text)
-        
-        # He sees two buttons on the web page, where the two read "type manually" and "upload statements"
-        button1 = self.browser.find_element(By.ID, "id_button_type")
-        button2 = self.browser.find_element(By.ID, "id_button_upload")
-        
+
+        # He sees two buttons on the web page, where the two read "Add Transaction" and "Upload Statement"
+        button1 = self.browser.find_element(By.ID, "id_type_data")
+        button2 = self.browser.find_element(By.ID, "id_upload_data")
+
+        self.assertEqual(button1.text, "Add Transaction")
+        self.assertEqual(button2.text, "Upload Statement")
 
         # He tries to enter a recent transaction record he made.
         # He finds multiple places he can type in and the first one is for date
@@ -96,7 +96,6 @@ class NewVisitorTest(LiveServerTestCase):
 
     # def test_can_upload_csv_or_pdf_statements(self):
     #     self.browser.get(self.live_server_url)
-        
 
     # def test_can_start_a_todo_list(self):
     #     # Edith has heard about a cool new online to-do app.
