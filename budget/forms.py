@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib.admin.options import widgets
+from budget.models import StatementFile
 
 
-class UploadFileForm(forms.Form):
-    file = forms.FileField()
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model  = StatementFile
+        fields = ['file']
 
 
 class InsertTransactionForm(forms.Form):

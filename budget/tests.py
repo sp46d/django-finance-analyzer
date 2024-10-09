@@ -1,9 +1,11 @@
 from pathlib import Path
 import os
+from datetime import date
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from budget.models import Transaction
 from accounts.models import CustomUser
+
 
 # This file is for unit test. From my understanding, two processes need to get tested:
 # 1. if the veiw function uses the correct template
@@ -62,16 +64,35 @@ class TypingTransactionTests(TestCase):
 
 class UploadStatementTests(TestCase):
     BASE_DIR = Path(".").resolve()
-    FILE_PATH = os.path.join(BASE_DIR, "artificial_data", "test.csv")
+    CSV_PATH = os.path.join(BASE_DIR, "artificial_data", "test.csv")
+    PDF_PATH = os.path.join(BASE_DIR, "artificial_data", "eStmt_2024-05-23.pdf")
 
     def test_uses_upload_template(self):
         response = self.client.get("/upload/")
         self.assertTemplateUsed(response, "budget/upload.html")
 
-    def test_redirects_after_file_upload(self):
-        with open(self.FILE_PATH) as fp:
+    def test_redirects_after_csv_upload(self):
+        with open(self.CSV_PATH) as fp:
             response = self.client.post("/upload/", data={"file": fp})
         self.assertRedirects(response, "/")
+        
+    def test_redirects_after_pdf_upload(self):
+        with open(self.PDF_PATH) as fp:
+            response = self.client.post("/upload/", data={"file": fp})
+        self.assertRedirects(response, "/")
+        
+    def test_can_parse_pdf_and_save_to_transaction(self):
+        with open(self.PDF_PATH) as fp:
+            self.client.post("/upload/", data={"file": fp})
+        first_item = Transaction.objects.first()
+        self.assertEqual(first_item.date, date(2024, 4, 24))
+        self.assertIn("Online", first_item.description)
+        self.assertEqual(first_item.amount, "1000.00")
+        
+    
+    def test_can_parse_csv_and_save_to_transaction(self):
+        # tests if it parses
+        pass
 
 
 class CustomUserTests(TestCase):

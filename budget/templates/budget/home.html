@@ -2,16 +2,37 @@
     <head>
         <title>Finance Analyzer</title>
     </head>
+
     <body>
         <h1>Finance Analyzer</h1>
-        <br>
-        <a id="id_type_data" href={% url "budget:new" %}><button>Add Transaction</button></a>
-        <a id="id_upload_data" href={% url "budget:upload" %}><button>Upload Statement</button></a>
-        <br><br>
+{% comment %} 
+Need to give more thoughts to how to represent summarizing table
+{% endcomment %}
+        <table id="id_summarize_table">
+            <tr>
+                <th></th>
+                <th>Total Income</th>
+                <th>Total Expense</th>
+            </tr>
+            <tr>
+                <th>Overall:</th>
+                <th>$10000.00</th>
+                <th>$8000.00</th>
+            </tr>
+            <tr>
+                <th>Fixed</th>
+                <th></th>
+                <th>$5000.00</th>
+            </tr>
+        </table>
+    
         <p>
             <h2>Transaction history</h2>
         </p>
-
+        <a id="id_type_data" href={% url "budget:new" %}><button>Add Transaction</button></a>
+        <a id="id_upload_data" href={% url "budget:upload" %}><button>Upload Statement</button></a>
+        <br><br><br>
+        
         <table id="id_transaction_table">
             <tr>
                 <th>DATE</th>
@@ -29,5 +50,6 @@
                 </tr>
             {% endfor %}
         </table>
+        
     </body>
 </html>

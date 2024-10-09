@@ -7,6 +7,11 @@
 
 <form enctype="multipart/form-data" method="POST">
     {% csrf_token %}
+    {% if error_message %}
+        <p>
+            <strong>{{ error_message }}</strong>
+        </p>
+    {% endif %}
 
     {{ form.file }}
     <br><br>

@@ -37,6 +37,11 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertEqual(button1.text, "Add Transaction")
         self.assertEqual(button2.text, "Upload Statement")
 
+        # insert_transaction_page = button1.click()
+        # upload_statement_page = button2.click()
+
+        # self.assertContains(insert_transaction_page, "Submit")
+
         # He tries to enter a recent transaction record he made.
         # He finds multiple places he can type in and the first one is for date
         # date_input = self.browser.find_element(By.ID, "id_new_date")
