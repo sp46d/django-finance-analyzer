@@ -49,9 +49,18 @@ def upload_file(request):
                         "error_message": "File must be either pdf or csv file.",
                     },
                 )
+                
+            if file_name in os.listdir(settings.MEDIA_ROOT):
+                return render(
+                    request,
+                    "budget/upload.html",
+                    {
+                        "form": form,
+                        "error_message": f'"{file_name}" has already been uploaded before.\nPlease double-check file before upload.',
+                    },
+                )
             form.save()
-            file_path = os.path.join(settings.MEDIA_ROOT, file_name)
-            import_func[file_name[-3:]](file_path)
+            import_func[file_name[-3:]](os.path.join(settings.MEDIA_ROOT, file_name))
             return redirect("/")
     else:
         form = UploadFileForm()
